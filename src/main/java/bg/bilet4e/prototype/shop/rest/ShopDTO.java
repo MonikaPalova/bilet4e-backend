@@ -1,7 +1,5 @@
 package bg.bilet4e.prototype.shop.rest;
 
-import bg.bilet4e.prototype.user.owner.rest.OwnerDTO;
-
 public class ShopDTO {
 
     private int id;
@@ -14,14 +12,14 @@ public class ShopDTO {
 
 //    private WeeklyWorkingTime workTime;
 
-    private OwnerDTO owner;
+    private int ownerId;
 
 //    private List<Image> images;
 
-    public ShopDTO(int id, String name, OwnerDTO owner) {
+    public ShopDTO(int id, String name, int ownerId) {
         this.id = id;
         this.name = name;
-        this.owner = owner;
+        this.ownerId = ownerId;
     }
 
     public int getId() {
@@ -32,8 +30,8 @@ public class ShopDTO {
         return name;
     }
 
-    public OwnerDTO getOwner() {
-        return owner;
+    public int getOwnerId() {
+        return ownerId;
     }
 
     public void setId(int id) {
@@ -44,8 +42,8 @@ public class ShopDTO {
         this.name = name;
     }
 
-    public void setOwner(OwnerDTO owner) {
-        this.owner = owner;
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
     }
 
 }

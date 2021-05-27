@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import bg.bilet4e.prototype.shop.Shop;
-import bg.bilet4e.prototype.shop.rest.ShopDTOConverter;
+import bg.bilet4e.prototype.shop.rest.ShopDTO;
 import bg.bilet4e.prototype.user.owner.Owner;
 import bg.bilet4e.prototype.user.owner.OwnerService;
 
@@ -25,13 +24,11 @@ class OwnerController {
 
     private final OwnerService ownerService;
     private final OwnerDTOConverter ownerConverter;
-    private final ShopDTOConverter shopConverter;
 
     @Autowired
-    OwnerController(OwnerService ownerService, OwnerDTOConverter ownerConverter, ShopDTOConverter shopConverter) {
+    OwnerController(OwnerService ownerService, OwnerDTOConverter ownerConverter) {
         this.ownerService = ownerService;
         this.ownerConverter = ownerConverter;
-        this.shopConverter = shopConverter;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +53,7 @@ class OwnerController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Owner with id [" + ownerId + "] doesn't exist."));
 
-        List<Shop> shops = owner.getShops();
-        return ResponseEntity.ok(shopConverter.toDTOs(shops));
+        List<ShopDTO> shopDtos = ownerConverter.toDTO(owner).getShops();
+        return ResponseEntity.ok(shopDtos);
     }
 }

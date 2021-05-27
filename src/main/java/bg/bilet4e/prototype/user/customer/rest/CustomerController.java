@@ -17,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import bg.bilet4e.prototype.shop.Shop;
 import bg.bilet4e.prototype.shop.ShopService;
-import bg.bilet4e.prototype.shop.rest.ShopDTOConverter;
+import bg.bilet4e.prototype.shop.rest.ShopDTO;
 import bg.bilet4e.prototype.user.customer.Customer;
 import bg.bilet4e.prototype.user.customer.CustomerService;
 
@@ -30,15 +30,13 @@ class CustomerController {
     private final CustomerService customerService;
     private final ShopService shopService;
     private final CustomerDTOConverter customerConverter;
-    private final ShopDTOConverter shopConverter;
 
     @Autowired
     CustomerController(CustomerService customerService, CustomerDTOConverter converter,
-            ShopDTOConverter shopConverter, ShopService shopService) {
+            ShopService shopService) {
         this.customerService = customerService;
         this.shopService = shopService;
         this.customerConverter = converter;
-        this.shopConverter = shopConverter;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,8 +64,8 @@ class CustomerController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Customer with id [" + customerId + "] doesn't exist."));
 
-        List<Shop> shops = customer.getFavoriteShops();
-        return ResponseEntity.ok(shopConverter.toDTOs(shops));
+        List<ShopDTO> shopDtos = customerConverter.toDTO(customer).getFavoriteShops();
+        return ResponseEntity.ok(shopDtos);
     }
 
     @PostMapping(path = "/{customerId}/favoriteShops/{shopId}", produces = MediaType.APPLICATION_JSON_VALUE)

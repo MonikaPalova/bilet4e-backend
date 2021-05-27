@@ -15,20 +15,16 @@ import bg.bilet4e.prototype.user.owner.rest.OwnerDTOConverter;
 @Component
 public class ShopDTOConverter {
 
-    private final OwnerDTOConverter ownerConverter;
-
     @Autowired
-    ShopDTOConverter(OwnerDTOConverter ownerConverter) {
-        this.ownerConverter = ownerConverter;
+    ShopDTOConverter() {
     }
 
     ShopDTO toDTO(Shop shop) {
         int id = shop.getId();
         String name = shop.getName();
         Owner owner = shop.getOwner();
-        OwnerDTO ownerDto = ownerConverter.toDTO(owner);
 
-        return new ShopDTO(id, name, ownerDto);
+        return new ShopDTO(id, name, owner.getId());
     }
 
     public List<ShopDTO> toDTOs(Collection<Shop> shops) {
