@@ -100,6 +100,10 @@ public class Shop {
         this.stock = stock;
     }
 
+    public void updateStock(TicketType type, int quantity) {
+        this.stock.put(type, quantity);
+    }
+
 //    @OneToMany(targetEntity = Image.class)
 //    @Column(name = "IMAGES")
 //    private List<Image> images;

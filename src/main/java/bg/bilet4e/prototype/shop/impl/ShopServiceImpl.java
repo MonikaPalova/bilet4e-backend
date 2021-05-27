@@ -91,4 +91,9 @@ public class ShopServiceImpl implements ShopService {
         shopRepository.deleteById(shopId);
     }
 
+    @Override
+    public void update(Shop shop) {
+        shopRepository.save(shop);
+    }
+
 }
