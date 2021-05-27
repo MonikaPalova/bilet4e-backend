@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import bg.bilet4e.prototype.security.JwtTokenUtil;
 import bg.bilet4e.prototype.security.JwtUserDetailsService;
 import bg.bilet4e.prototype.security.user.User;
+import bg.bilet4e.prototype.security.user.UserService;
 import bg.bilet4e.prototype.security.user.UserType;
 
 @Controller
 public class SecurityController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityController.class);
-    
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -31,6 +32,9 @@ public class SecurityController {
 
     @Autowired
     private JwtUserDetailsService userDetailsService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(
@@ -44,19 +48,19 @@ public class SecurityController {
                 .loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(token));
+        int userId = userService.fetchByUsername(username).getId();
+        return ResponseEntity.ok(new AuthenticationResponse(userId, token));
     }
 
     // TODO User to UserRequest if changes to user
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@Valid @RequestBody User user) throws Exception {
-        User createdUser = userDetailsService.save(user); // TODO use DTO converter here
+        User createdUser = userDetailsService.save(user);
         String username = createdUser.getUsername();
         int id = createdUser.getId();
         UserType type = createdUser.getType();
 
         LOGGER.info("registered user with id [{}] and username [{}]", id, username);
-        return ResponseEntity.ok(new RegisterResponse(id, username, type)); // TODO dont return
-                                                                            // password?
+        return ResponseEntity.ok(new RegisterResponse(id, username, type));
     }
 }
