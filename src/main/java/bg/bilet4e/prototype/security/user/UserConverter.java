@@ -1,8 +1,9 @@
 package bg.bilet4e.prototype.security.user;
 
+import org.springframework.stereotype.Component;
+
 import bg.bilet4e.prototype.user.customer.Customer;
 import bg.bilet4e.prototype.user.customer.CustomerType;
-import org.springframework.stereotype.Component;
 
 @Component
 public class UserConverter {

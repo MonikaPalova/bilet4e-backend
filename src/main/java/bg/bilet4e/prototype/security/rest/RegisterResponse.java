@@ -1,9 +1,11 @@
-package bg.bilet4e.prototype.security.user;
+package bg.bilet4e.prototype.security.rest;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class User {
+import bg.bilet4e.prototype.security.user.UserType;
+
+public class RegisterResponse {
 
     @NotNull
     private int id;
@@ -11,24 +13,17 @@ public class User {
     @NotBlank
     private String username;
 
-    @NotBlank
-    private String password;
-
     @NotNull
     private UserType type;
 
-    User(String username, String password, UserType type) {
+    public RegisterResponse(int id, String username, UserType type) {
+        this.id = id;
         this.username = username;
-        this.password = password;
         this.type = type;
     }
 
     public String getUsername() {
         return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public UserType getType() {
@@ -37,10 +32,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void setType(UserType type) {
@@ -54,5 +45,4 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
-
 }

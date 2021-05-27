@@ -2,8 +2,6 @@ package bg.bilet4e.prototype.security.user;
 
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,8 +15,6 @@ import bg.bilet4e.prototype.user.owner.OwnerService;
 
 @Component
 public class UserService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final CustomerService customerService;
     private final OwnerService ownerService;
@@ -41,15 +37,17 @@ public class UserService {
         return user;
     }
 
-    public Customer save(User user) {
+    public User save(User user) {
         checkIfUsernameExists(user.getUsername());
         UserType userType = user.getType();
 
-        return switch (userType) {
+        Customer savedCustomer = switch (userType) {
             case CUSTOMER -> saveCustomer(user);
             case OWNER -> saveOwner(user);
             case ADMIN -> throw new UnsupportedOperationException("admin not supported yet");
         };
+
+        return userConverter.toUser(savedCustomer);
     }
 
     private void checkIfUsernameExists(String username) {
@@ -62,7 +60,6 @@ public class UserService {
     }
 
     private Customer saveCustomer(User user) {
-        LOGGER.error("saving customer = {}", user.getUsername());
         String username = user.getUsername();
         String password = user.getPassword();
 

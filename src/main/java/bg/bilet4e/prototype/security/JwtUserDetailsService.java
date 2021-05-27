@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import bg.bilet4e.prototype.security.user.User;
 import bg.bilet4e.prototype.security.user.UserService;
-import bg.bilet4e.prototype.user.customer.Customer;
 
 @Component
 public class JwtUserDetailsService implements UserDetailsService {
@@ -31,7 +29,7 @@ public class JwtUserDetailsService implements UserDetailsService {
                 username, password, new ArrayList<>());
     }
 
-    public Customer save(User user) {
+    public User save(User user) {
         user.setPassword(bcryptEncoder.encode(user.getPassword()));
 
         return userService.save(user);

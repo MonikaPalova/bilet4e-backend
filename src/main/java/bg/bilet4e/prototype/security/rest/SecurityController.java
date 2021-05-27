@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import bg.bilet4e.prototype.security.JwtTokenUtil;
 import bg.bilet4e.prototype.security.JwtUserDetailsService;
 import bg.bilet4e.prototype.security.user.User;
-import bg.bilet4e.prototype.user.customer.Customer;
+import bg.bilet4e.prototype.security.user.UserType;
 
 @Controller
 public class SecurityController {
@@ -27,6 +27,8 @@ public class SecurityController {
 
     @Autowired
     private JwtUserDetailsService userDetailsService;
+
+    @Autowired
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(
@@ -46,8 +48,12 @@ public class SecurityController {
     // TODO User to UserRequest if changes to user
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@Valid @RequestBody User user) throws Exception {
-        Customer createdUser = userDetailsService.save(user); // TODO use DTO converter here
+        User createdUser = userDetailsService.save(user); // TODO use DTO converter here
+        String username = createdUser.getUsername();
+        int id = createdUser.getId();
+        UserType type = createdUser.getType();
 
-        return ResponseEntity.ok(createdUser); // TODO dont return password?
+        return ResponseEntity.ok(new RegisterResponse(id, username, type)); // TODO dont return
+                                                                            // password?
     }
 }
