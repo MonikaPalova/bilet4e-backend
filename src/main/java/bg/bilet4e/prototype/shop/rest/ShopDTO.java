@@ -1,6 +1,9 @@
 package bg.bilet4e.prototype.shop.rest;
 
+import java.util.EnumMap;
+
 import bg.bilet4e.prototype.shop.Coordinates;
+import bg.bilet4e.prototype.ticket.TicketType;
 
 public class ShopDTO {
 
@@ -18,11 +21,14 @@ public class ShopDTO {
 
 //    private List<Image> images;
 
-    public ShopDTO(int id, String name, int ownerId, Coordinates coordinates) {
+    private EnumMap<TicketType, Integer> stock;
+    
+    public ShopDTO(int id, String name, int ownerId, Coordinates coordinates,EnumMap<TicketType, Integer> stock) {
         this.id = id;
         this.name = name;
         this.ownerId = ownerId;
         this.coordinates = coordinates;
+        this.stock=stock;
     }
 
     public int getId() {
@@ -55,5 +61,13 @@ public class ShopDTO {
 
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public EnumMap<TicketType, Integer> getStock() {
+        return stock;
+    }
+
+    public void setStock(EnumMap<TicketType, Integer> stock) {
+        this.stock = stock;
     }
 }
