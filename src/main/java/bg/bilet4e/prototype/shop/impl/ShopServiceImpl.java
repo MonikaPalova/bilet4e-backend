@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import bg.bilet4e.prototype.shop.Coordinates;
 import bg.bilet4e.prototype.shop.Shop;
 import bg.bilet4e.prototype.shop.ShopRepository;
 import bg.bilet4e.prototype.shop.ShopService;
@@ -28,11 +29,11 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop create(int ownerId, String name) {
+    public Shop create(int ownerId, String name, Coordinates coordinates) {
         Owner owner = getOwner(ownerId);
         checkIfShopLimitReached(ownerId);
 
-        Shop shop = new Shop(name, owner);
+        Shop shop = new Shop(name, owner, coordinates);
         Shop createdShop = shopRepository.save(shop);
 
         addShopToOwner(createdShop, owner);

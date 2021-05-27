@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import bg.bilet4e.prototype.user.owner.Owner;
@@ -26,10 +27,10 @@ public class Shop {
 //    @Valid
 //    @Column(name = "ADDRESS")
 //    private Address address;
-//
-//    @Valid
-//    @Column(name = "COORDINATES")
-//    private Coordinates coordinates;
+
+    @Valid
+    @Column(name = "COORDINATES")
+    private Coordinates coordinates;
 
 //    @Valid
 //    @Column(name = "WORK_TIME")
@@ -40,14 +41,15 @@ public class Shop {
     private Owner owner;
 
     public Shop() {
-        //used by Spring
+        // used by Spring
     }
-    
-    public Shop(String name, Owner owner) {
+
+    public Shop(String name, Owner owner, Coordinates coordinates) {
         this.name = name;
         this.owner = owner;
+        this.coordinates = coordinates;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -72,9 +74,16 @@ public class Shop {
         this.owner = owner;
     }
 
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
 //    @OneToMany(targetEntity = Image.class)
 //    @Column(name = "IMAGES")
 //    private List<Image> images;
-    
-    
+
 }

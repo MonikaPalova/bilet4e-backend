@@ -1,6 +1,10 @@
 package bg.bilet4e.prototype.shop.rest;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import bg.bilet4e.prototype.shop.Coordinates;
 
 public class ShopRequest {
 
@@ -10,9 +14,13 @@ public class ShopRequest {
     @NotBlank
     private String name;
 
-    public ShopRequest(String ownerId, String name) {
+    @Valid
+    private Coordinates coordinates;
+
+    public ShopRequest(String ownerId, String name, Coordinates coordinates) {
         this.ownerId = ownerId;
         this.name = name;
+        this.coordinates = coordinates;
     }
 
     public String getOwnerId() {
@@ -29,5 +37,13 @@ public class ShopRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 }

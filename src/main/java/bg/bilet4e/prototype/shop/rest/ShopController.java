@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import bg.bilet4e.prototype.shop.Coordinates;
 import bg.bilet4e.prototype.shop.Shop;
 import bg.bilet4e.prototype.shop.ShopService;
 
@@ -63,7 +64,8 @@ class ShopController {
     public ResponseEntity<?> create(@Valid @RequestBody ShopRequest shopRequest) {
         int ownerId = extractOwnerId(shopRequest);
         String name = shopRequest.getName();
-        Shop createdShop = shopService.create(ownerId, name);
+        Coordinates coordinates = shopRequest.getCoordinates();
+        Shop createdShop = shopService.create(ownerId, name, coordinates);
 
         LOGGER.info("created shop with id [{}] and ownerId [{}]", createdShop.getId(), ownerId);
         return ResponseEntity.ok(converter.toDTO(createdShop));

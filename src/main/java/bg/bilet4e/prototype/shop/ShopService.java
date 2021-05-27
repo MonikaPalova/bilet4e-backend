@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface ShopService {
 
-    Shop create(int ownerId, String name);
+    Shop create(int ownerId, String name, Coordinates coordinates);
 
     Optional<Shop> fetchById(int shopId);
 
@@ -17,4 +17,5 @@ public interface ShopService {
     List<Shop> fetchAll();
 
     void deleteById(int shopId);
+
 }

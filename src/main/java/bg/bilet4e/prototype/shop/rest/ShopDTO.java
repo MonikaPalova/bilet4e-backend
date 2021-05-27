@@ -1,5 +1,7 @@
 package bg.bilet4e.prototype.shop.rest;
 
+import bg.bilet4e.prototype.shop.Coordinates;
+
 public class ShopDTO {
 
     private int id;
@@ -8,7 +10,7 @@ public class ShopDTO {
 
 //    private Address address;
 //
-//    private Coordinates coordinates;
+    private Coordinates coordinates; // TODO create dto
 
 //    private WeeklyWorkingTime workTime;
 
@@ -16,10 +18,11 @@ public class ShopDTO {
 
 //    private List<Image> images;
 
-    public ShopDTO(int id, String name, int ownerId) {
+    public ShopDTO(int id, String name, int ownerId, Coordinates coordinates) {
         this.id = id;
         this.name = name;
         this.ownerId = ownerId;
+        this.coordinates = coordinates;
     }
 
     public int getId() {
@@ -46,4 +49,11 @@ public class ShopDTO {
         this.ownerId = ownerId;
     }
 
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
 }
