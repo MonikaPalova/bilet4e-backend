@@ -21,7 +21,7 @@ public class GenericExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class) // TODO : fix message
     public final ResponseEntity<ErrorResponseDTO> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex) {
-        String msg = ex.getLocalizedMessage();
+        String msg = ex.getMessage();
         ErrorResponseDTO error = new ErrorResponseDTO(msg);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }

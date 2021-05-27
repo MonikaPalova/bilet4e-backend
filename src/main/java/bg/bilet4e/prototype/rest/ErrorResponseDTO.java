@@ -5,7 +5,7 @@ public class ErrorResponseDTO {
     public ErrorResponseDTO(String message) {
         this.message = message;
     }
- 
+
     private String message;
 
     public String getMessage() {
