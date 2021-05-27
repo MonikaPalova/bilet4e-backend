@@ -17,7 +17,8 @@ public class User {
     @NotNull
     private UserType type;
 
-    User(String username, String password, UserType type) {
+    User(int id, String username, String password, UserType type) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.type = type;

@@ -9,6 +9,7 @@ import bg.bilet4e.prototype.user.customer.CustomerType;
 public class UserConverter {
 
     public User toUser(Customer customer) {
+        int id = customer.getId();
         String username = customer.getUsername();
         String password = customer.getPassword();
         CustomerType customerType = customer.getType();
@@ -18,6 +19,6 @@ public class UserConverter {
             case CUSTOMER_AND_OWNER -> UserType.OWNER;
         };
 
-        return new User(username, password, userType);
+        return new User(id, username, password, userType);
     }
 }
