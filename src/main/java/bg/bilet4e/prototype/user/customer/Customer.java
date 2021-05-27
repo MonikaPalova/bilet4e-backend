@@ -1,19 +1,13 @@
 package bg.bilet4e.prototype.user.customer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Value;
-
-import bg.bilet4e.prototype.shop.Shop;
 
 @Entity
 public class Customer {
@@ -34,8 +28,8 @@ public class Customer {
     @Value("-1")
     private int ticketId;
 
-    @OneToMany(targetEntity = Shop.class)
-    private final List<Shop> favoriteShops = new ArrayList<>();
+//    @OneToMany(targetEntity = Shop.class)
+//    private final List<Shop> favoriteShops = new ArrayList<>();
 
     public Customer() {
         this.type = CustomerType.CUSTOMER;
