@@ -15,4 +15,6 @@ public interface CustomerService {
     Optional<Customer> fetchById(int customerId);
 
     Optional<Customer> fetchByUsername(String username);
+
+    void update(Customer customer);
 }

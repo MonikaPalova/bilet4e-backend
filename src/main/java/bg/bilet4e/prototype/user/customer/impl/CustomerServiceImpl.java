@@ -46,4 +46,9 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findByUsername(username);
     }
 
+    @Override
+    public void update(Customer customer) {
+        customerRepository.save(customer);
+    }
+
 }
