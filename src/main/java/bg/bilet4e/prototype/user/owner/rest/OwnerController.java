@@ -34,9 +34,8 @@ class OwnerController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<?> getOwners() {
         List<Owner> owners = ownerService.fetchAll();
-
-        owners.forEach(owner -> System.out.println(owner));
         owners.forEach(converter::toDTO);
+        
         return ResponseEntity.ok(owners);
     }
 

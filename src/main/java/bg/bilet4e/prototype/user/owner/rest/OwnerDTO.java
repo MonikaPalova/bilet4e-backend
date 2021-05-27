@@ -1,6 +1,6 @@
 package bg.bilet4e.prototype.user.owner.rest;
 
-class OwnerDTO {
+public class OwnerDTO {
 
     private int id;
 

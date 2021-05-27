@@ -6,14 +6,14 @@ import org.springframework.stereotype.Component;
 import bg.bilet4e.prototype.user.owner.Owner;
 
 @Component
-class OwnerDTOConverter {
+public class OwnerDTOConverter {
 
     @Autowired
     OwnerDTOConverter() {
 
     }
 
-    OwnerDTO toDTO(Owner owner) {
+    public OwnerDTO toDTO(Owner owner) {
         int id = owner.getId();
         String username = owner.getUsername();
 

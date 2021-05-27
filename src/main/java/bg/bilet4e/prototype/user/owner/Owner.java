@@ -1,15 +1,20 @@
 package bg.bilet4e.prototype.user.owner;
 
-import javax.persistence.Entity;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
+import bg.bilet4e.prototype.shop.Shop;
 import bg.bilet4e.prototype.user.customer.Customer;
 import bg.bilet4e.prototype.user.customer.CustomerType;
 
 @Entity
 public class Owner extends Customer {
 
-//    @OneToMany(targetEntity = Shop.class)
-//    private final List<Shop> shops = new ArrayList<>();
+    @OneToMany(targetEntity = Shop.class)
+    private final List<Shop> shops = new ArrayList<>();
 
     public Owner() {
         this.type = CustomerType.CUSTOMER_AND_OWNER;
