@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,8 +17,11 @@ import bg.bilet4e.prototype.user.customer.Customer;
 import bg.bilet4e.prototype.user.customer.CustomerService;
 
 @RestController
+@RequestMapping(value = CustomerController.API_BASE_PATH)
 class CustomerController {
 
+    static final String API_BASE_PATH = "api/v1/customers";
+    
     private final CustomerService customerService;
     private final CustomerDTOConverter converter;
 
@@ -26,7 +31,7 @@ class CustomerController {
         this.converter = converter;
     }
 
-    @GetMapping("/customers")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<?> getCustomers() {
         List<Customer> customers = customerService.fetchAll();
 
@@ -35,7 +40,7 @@ class CustomerController {
         return ResponseEntity.ok(customers);
     }
 
-    @GetMapping("/customers/{customerId}")
+    @GetMapping(path = "/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<?> getCustomer(@PathVariable final int customerId) {
         Optional<Customer> customer = customerService.fetchById(customerId);
         if (customer.isEmpty()) {
