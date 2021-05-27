@@ -10,12 +10,12 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>bg.bilet4e</groupId>
-	<artifactId>prototype</artifactId>
+	<artifactId>prototype-heroku-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>prototype</name>
 	<description>bilet4e.bg - prototype for the HCI course in FMI 2021</description>
 	<properties>
-		<java.version>15</java.version>
+		<java.version>15.0.1</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
