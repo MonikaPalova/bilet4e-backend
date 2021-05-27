@@ -48,8 +48,10 @@ public class SecurityController {
                 .loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        int userId = userService.fetchByUsername(username).getId();
-        return ResponseEntity.ok(new AuthenticationResponse(userId, token));
+        User user = userService.fetchByUsername(username);
+        int userId = user.getId();
+        UserType userType = user.getType();
+        return ResponseEntity.ok(new AuthenticationResponse(userId, userType, token));
     }
 
     // TODO User to UserRequest if changes to user
