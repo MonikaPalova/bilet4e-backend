@@ -28,8 +28,6 @@ public class SecurityController {
     @Autowired
     private JwtUserDetailsService userDetailsService;
 
-    @Autowired
-
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(
             @Valid @RequestBody AuthenticationRequest authenticationRequest) {
