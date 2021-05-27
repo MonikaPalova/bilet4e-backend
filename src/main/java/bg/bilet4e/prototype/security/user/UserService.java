@@ -1,10 +1,14 @@
 package bg.bilet4e.prototype.security.user;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import bg.bilet4e.prototype.user.customer.Customer;
 import bg.bilet4e.prototype.user.customer.CustomerService;
@@ -38,6 +42,7 @@ public class UserService {
     }
 
     public Customer save(User user) {
+        checkIfUsernameExists(user.getUsername());
         UserType userType = user.getType();
 
         return switch (userType) {
@@ -45,6 +50,15 @@ public class UserService {
             case OWNER -> saveOwner(user);
             case ADMIN -> throw new UnsupportedOperationException("admin not supported yet");
         };
+    }
+
+    private void checkIfUsernameExists(String username) {
+        Optional<Customer> optional = customerService.fetchByUsername(username);
+
+        if (optional.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Username [" + username + "] is already taken");
+        }
     }
 
     private Customer saveCustomer(User user) {

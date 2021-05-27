@@ -2,6 +2,7 @@ package bg.bilet4e.prototype.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,4 +34,11 @@ public class GenericExceptionHandler {
         return new ResponseEntity<>(error, ex.getStatus());
     }
 
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public final ResponseEntity<ErrorResponseDTO> handleUsernameNotFoundException(
+            UsernameNotFoundException ex) {
+        String msg = ex.getMessage();
+        ErrorResponseDTO error = new ErrorResponseDTO(msg);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }
