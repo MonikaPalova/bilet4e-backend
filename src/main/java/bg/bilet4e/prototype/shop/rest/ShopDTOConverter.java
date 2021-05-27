@@ -1,5 +1,9 @@
 package bg.bilet4e.prototype.shop.rest;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,4 +31,9 @@ public class ShopDTOConverter {
         return new ShopDTO(id, name, ownerDto);
     }
 
+    public List<ShopDTO> toDTOs(Collection<Shop> shops) {
+        return shops.stream() //
+                .map(this::toDTO)//
+                .collect(Collectors.toList());
+    }
 }

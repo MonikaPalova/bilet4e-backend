@@ -2,6 +2,8 @@ package bg.bilet4e.prototype.security.rest;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +21,8 @@ import bg.bilet4e.prototype.security.user.UserType;
 @Controller
 public class SecurityController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityController.class);
+    
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -51,6 +55,7 @@ public class SecurityController {
         int id = createdUser.getId();
         UserType type = createdUser.getType();
 
+        LOGGER.info("registered user with id [{}] and username [{}]", id, username);
         return ResponseEntity.ok(new RegisterResponse(id, username, type)); // TODO dont return
                                                                             // password?
     }

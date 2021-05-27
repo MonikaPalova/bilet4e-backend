@@ -33,14 +33,22 @@ public class ShopServiceImpl implements ShopService {
         checkIfShopLimitReached(ownerId);
 
         Shop shop = new Shop(name, owner);
+        Shop createdShop = shopRepository.save(shop);
 
-        return shopRepository.save(shop);
+        addShopToOwner(createdShop, owner);
+
+        return createdShop;
     }
 
     private Owner getOwner(int ownerId) {
         return ownerService.fetchById(ownerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Owner with id [" + ownerId + "] doesnt exist"));
+    }
+
+    private void addShopToOwner(Shop createdShop, Owner owner) {
+        owner.addShop(createdShop);
+        ownerService.update(owner);
     }
 
     private void checkIfShopLimitReached(int ownerId) { // TODO : move to owner service
@@ -67,6 +75,19 @@ public class ShopServiceImpl implements ShopService {
         shopRepository.findAll().forEach(shops::add);
 
         return shops;
+    }
+
+    @Override
+    public void deleteById(int shopId) {
+        Shop shop = shopRepository.findById(shopId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Shop with id [" + shopId + "] doesn't exist"));
+
+        Owner owner = shop.getOwner();
+        owner.removeShop(shopId);
+        ownerService.update(owner);
+
+        shopRepository.deleteById(shopId);
     }
 
 }

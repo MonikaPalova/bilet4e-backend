@@ -2,22 +2,20 @@ package bg.bilet4e.prototype.shop.rest;
 
 import javax.validation.constraints.NotBlank;
 
-import com.sun.istack.NotNull;
-
 public class ShopRequest {
 
-    @NotNull
-    private int ownerId;
+    @NotBlank
+    private String ownerId;
 
     @NotBlank
     private String name;
 
-    public ShopRequest(int ownerId, String name) {
+    public ShopRequest(String ownerId, String name) {
         this.ownerId = ownerId;
         this.name = name;
     }
 
-    public int getOwnerId() {
+    public String getOwnerId() {
         return ownerId;
     }
 
@@ -25,7 +23,7 @@ public class ShopRequest {
         return name;
     }
 
-    public void setOwnerId(int ownerId) {
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
 

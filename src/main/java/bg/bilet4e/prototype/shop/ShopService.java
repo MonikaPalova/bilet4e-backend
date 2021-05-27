@@ -15,4 +15,6 @@ public interface ShopService {
     List<Shop> fetchByOwnerId(int ownerId);
 
     List<Shop> fetchAll();
+
+    void deleteById(int shopId);
 }

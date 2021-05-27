@@ -39,6 +39,10 @@ public class Shop {
     @JoinColumn(name = "OWNER_ID")
     private Owner owner;
 
+    public Shop() {
+        //used by Spring
+    }
+    
     public Shop(String name, Owner owner) {
         this.name = name;
         this.owner = owner;

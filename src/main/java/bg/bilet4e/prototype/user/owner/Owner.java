@@ -25,4 +25,16 @@ public class Owner extends Customer {
         super(username, password);
         this.type = CustomerType.CUSTOMER_AND_OWNER;
     }
+
+    public List<Shop> getShops() {
+        return shops;
+    }
+
+    public void removeShop(int shopId) {
+        shops.removeIf(shop -> shop.getId() == shopId);
+    }
+
+    public void addShop(Shop shop) {
+        shops.add(shop);
+    }
 }

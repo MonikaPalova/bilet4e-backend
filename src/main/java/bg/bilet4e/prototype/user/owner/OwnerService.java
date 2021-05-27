@@ -13,4 +13,7 @@ public interface OwnerService {
     Owner create(String username, String password);
 
     Optional<Owner> fetchById(int ownerId);
+
+    void update(Owner owner);
 }
+

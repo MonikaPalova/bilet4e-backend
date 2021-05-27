@@ -1,7 +1,6 @@
 package bg.bilet4e.prototype.user.owner.rest;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import bg.bilet4e.prototype.shop.Shop;
+import bg.bilet4e.prototype.shop.rest.ShopDTOConverter;
 import bg.bilet4e.prototype.user.owner.Owner;
 import bg.bilet4e.prototype.user.owner.OwnerService;
 
@@ -23,31 +24,39 @@ class OwnerController {
     static final String API_BASE_PATH = "api/v1/owners";
 
     private final OwnerService ownerService;
-    private final OwnerDTOConverter converter;
+    private final OwnerDTOConverter ownerConverter;
+    private final ShopDTOConverter shopConverter;
 
     @Autowired
-    OwnerController(OwnerService ownerService, OwnerDTOConverter converter) {
+    OwnerController(OwnerService ownerService, OwnerDTOConverter ownerConverter, ShopDTOConverter shopConverter) {
         this.ownerService = ownerService;
-        this.converter = converter;
+        this.ownerConverter = ownerConverter;
+        this.shopConverter = shopConverter;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<?> getOwners() {
         List<Owner> owners = ownerService.fetchAll();
-        owners.forEach(converter::toDTO);
-        
-        return ResponseEntity.ok(owners);
+
+        return ResponseEntity.ok(ownerConverter.toDTOs(owners));
     }
 
     @GetMapping(path = "/{ownerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<?> getOwner(@PathVariable final int ownerId) {
-        Optional<Owner> owner = ownerService.fetchById(ownerId);
-        if (owner.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "Owner with id [" + ownerId + "] doesn't exist.");
-        }
+        Owner owner = ownerService.fetchById(ownerId) //
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Owner with id [" + ownerId + "] doesn't exist."));
 
-        OwnerDTO dto = converter.toDTO(owner.get());
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(ownerConverter.toDTO(owner));
+    }
+
+    @GetMapping(path = "/{ownerId}/shops", produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<?> getOwnerShops(@PathVariable final int ownerId) {
+        Owner owner = ownerService.fetchById(ownerId) //
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Owner with id [" + ownerId + "] doesn't exist."));
+
+        List<Shop> shops = owner.getShops();
+        return ResponseEntity.ok(shopConverter.toDTOs(shops));
     }
 }
