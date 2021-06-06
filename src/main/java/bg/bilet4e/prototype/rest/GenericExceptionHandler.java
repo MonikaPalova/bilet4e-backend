@@ -67,6 +67,8 @@ public class GenericExceptionHandler {
             ResponseStatusException ex) {
         String msg = ex.getReason();
         ErrorResponseDTO error = new ErrorResponseDTO(msg);
+
+        LOGGER.error("Failed request",ex);
         return new ResponseEntity<>(error, ex.getStatus());
     }
 
@@ -76,7 +78,7 @@ public class GenericExceptionHandler {
         String msg = ex.getMessage();
         ErrorResponseDTO error = new ErrorResponseDTO(msg);
 
-        LOGGER.debug("Invalid username given for request", ex);
+        LOGGER.error("Invalid username given for request", ex);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }
