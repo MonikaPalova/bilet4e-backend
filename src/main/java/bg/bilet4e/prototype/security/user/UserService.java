@@ -33,8 +33,7 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "User with username [" + username + "] not found"));
 
-        User user = userConverter.toUser(customer);
-        return user;
+        return  userConverter.toUser(customer);
     }
 
     public User save(User user) {

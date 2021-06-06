@@ -2,7 +2,6 @@ package bg.bilet4e.prototype.shop.rest;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import bg.bilet4e.prototype.shop.Coordinates;
 
