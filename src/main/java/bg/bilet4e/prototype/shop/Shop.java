@@ -13,6 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import bg.bilet4e.prototype.ticket.TicketType;
 import bg.bilet4e.prototype.user.owner.Owner;
 
@@ -28,17 +31,17 @@ public class Shop {
     @Column(name = "NAME")
     private String name;
 
-//    @Valid
-//    @Column(name = "ADDRESS")
-//    private Address address;
+    // @Valid
+    // @Column(name = "ADDRESS")
+    // private Address address;
 
     @Valid
     @Column(name = "COORDINATES")
     private Coordinates coordinates;
 
-//    @Valid
-//    @Column(name = "WORK_TIME")
-//    private WeeklyWorkingTime workTime;
+    // @Valid
+    // @Column(name = "WORK_TIME")
+    // private WeeklyWorkingTime workTime;
 
     @Column(name = "STOCK")
     private EnumMap<TicketType, Integer> stock;
@@ -56,8 +59,7 @@ public class Shop {
         this.owner = owner;
         this.coordinates = coordinates;
         this.stock = new EnumMap<>(TicketType.class);
-        this.stock.putAll(
-                Map.of(TicketType.ONE_TIME, 0, TicketType.ONE_DAY, 0, TicketType.THREE_DAYS, 0));
+        this.stock.putAll(Map.of(TicketType.ONE_TIME, 0, TicketType.ONE_DAY, 0, TicketType.THREE_DAYS, 0));
     }
 
     public int getId() {
@@ -100,12 +102,17 @@ public class Shop {
         this.stock = stock;
     }
 
-    public void updateStock(TicketType type, int quantity) {
-        this.stock.put(type, quantity);
+    public void updateStock(TicketType type, Integer quantity) {
+        var newStockQuantity = this.stock.get(type) + quantity;
+        if (newStockQuantity < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "There is not enough quantity. Current is [" + this.stock.get(type) + "]");
+        }
+        this.stock.put(type, newStockQuantity);
     }
 
-//    @OneToMany(targetEntity = Image.class)
-//    @Column(name = "IMAGES")
-//    private List<Image> images;
+    // @OneToMany(targetEntity = Image.class)
+    // @Column(name = "IMAGES")
+    // private List<Image> images;
 
 }
