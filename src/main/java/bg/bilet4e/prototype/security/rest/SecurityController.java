@@ -51,12 +51,14 @@ public class SecurityController {
         User user = userService.fetchByUsername(username);
         int userId = user.getId();
         UserType userType = user.getType();
+
+        LOGGER.info("authenticated user [{}]", user.getUsername());
         return ResponseEntity.ok(new AuthenticationResponse(userId, userType, token));
     }
 
     // TODO User to UserRequest if changes to user
     @PostMapping("/register")
-    public ResponseEntity<?> saveUser(@Valid @RequestBody User user) throws Exception {
+    public ResponseEntity<?> saveUser(@Valid @RequestBody User user) {
         User createdUser = userDetailsService.save(user);
         String username = createdUser.getUsername();
         int id = createdUser.getId();

@@ -2,6 +2,8 @@ package bg.bilet4e.prototype.user.owner.rest;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,6 +24,8 @@ class OwnerController {
 
     static final String API_BASE_PATH = "api/v1/owners";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(OwnerController.class);
+    
     private final OwnerService ownerService;
     private final OwnerDTOConverter ownerConverter;
 
@@ -32,14 +36,16 @@ class OwnerController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<?> getOwners() {
+    public ResponseEntity<?> getOwners() {
+        LOGGER.info("performing GET request /api/v1/owners");
         List<Owner> owners = ownerService.fetchAll();
 
         return ResponseEntity.ok(ownerConverter.toDTOs(owners));
     }
 
     @GetMapping(path = "/{ownerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<?> getOwner(@PathVariable final int ownerId) {
+    public ResponseEntity<?> getOwner(@PathVariable final int ownerId) {
+        LOGGER.info("performing GET request /api/v1/owners/{}",ownerId);
         Owner owner = ownerService.fetchById(ownerId) //
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Owner with id [" + ownerId + "] doesn't exist."));
@@ -48,7 +54,8 @@ class OwnerController {
     }
 
     @GetMapping(path = "/{ownerId}/shops", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<?> getOwnerShops(@PathVariable final int ownerId) {
+    public ResponseEntity<?> getOwnerShops(@PathVariable final int ownerId) {
+        LOGGER.info("performing GET request /api/v1/owners/{}/shops",ownerId);
         Owner owner = ownerService.fetchById(ownerId) //
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Owner with id [" + ownerId + "] doesn't exist."));

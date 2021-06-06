@@ -1,7 +1,7 @@
 package bg.bilet4e.prototype.shop.rest;
 
-import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -34,6 +34,8 @@ class ShopController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShopController.class);
 
+    private static final String SHOP_NOT_EXIST_ERR_MSG = "Shop with id [%s] doesn't exist.";
+
     private final ShopService shopService;
     private final ShopDTOConverter converter;
 
@@ -44,23 +46,25 @@ class ShopController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<?> getShops() {
+    public ResponseEntity<?> getShops() {
+        LOGGER.info("performing GET request /api/v1/shops");
         List<Shop> shops = shopService.fetchAll();
 
         return ResponseEntity.ok(converter.toDTOs(shops));
     }
 
     @GetMapping(path = "/{shopId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<?> getShop(@PathVariable final int shopId) {
-        Shop shop = shopService.fetchById(shopId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Shop with id [" + shopId + "] doesn't exist."));
+    public ResponseEntity<?> getShop(@PathVariable final int shopId) {
+        LOGGER.info("performing GET request /api/v1/shops/{}", shopId);
+        Shop shop = shopService.fetchById(shopId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format(SHOP_NOT_EXIST_ERR_MSG, shopId)));
 
         return ResponseEntity.ok(converter.toDTO(shop));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@Valid @RequestBody ShopRequest shopRequest) {
+        LOGGER.info("performing POST request /api/v1/shops");
         int ownerId = extractOwnerId(shopRequest);
         String name = shopRequest.getName();
         Coordinates coordinates = shopRequest.getCoordinates();
@@ -76,13 +80,13 @@ class ShopController {
         try {
             return Integer.parseInt(ownerId);
         } catch (NumberFormatException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Invalid ownerId [" + ownerId + "]", ex);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ownerId [" + ownerId + "]", ex);
         }
     }
 
     @DeleteMapping(path = "/{shopId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<?> delete(@PathVariable final int shopId) {
+    public ResponseEntity<?> delete(@PathVariable final int shopId) {
+        LOGGER.info("performing DELETE request /api/v1/shops/{}", shopId);
         shopService.deleteById(shopId);
 
         LOGGER.info("deleted shop with id [{}]", shopId);
@@ -90,22 +94,21 @@ class ShopController {
     }
 
     @GetMapping(path = "/{shopId}/stock", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<?> getStock(@PathVariable final int shopId) {
-        Shop shop = shopService.fetchById(shopId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Shop with id [" + shopId + "] doesn't exist."));
+    public ResponseEntity<?> getStock(@PathVariable final int shopId) {
+        LOGGER.info("performing GET request /api/v1/shops/{}/stock", shopId);
+        Shop shop = shopService.fetchById(shopId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format(SHOP_NOT_EXIST_ERR_MSG, shopId)));
 
         return ResponseEntity.ok(shop.getStock());
     }
 
     @PatchMapping(path = "/{shopId}/stock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<?> getStock(@PathVariable final int shopId,
-            @RequestBody StockRequest stockRequest) {
-        Shop shop = shopService.fetchById(shopId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Shop with id [" + shopId + "] doesn't exist."));
+    public ResponseEntity<?> updateStock(@PathVariable final int shopId, @RequestBody StockRequest stockRequest) {
+        LOGGER.info("performing UPDATE request /api/v1/shops/{}/stock", shopId);
+        Shop shop = shopService.fetchById(shopId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format(SHOP_NOT_EXIST_ERR_MSG, shopId)));
 
-        EnumMap<TicketType, Integer> newStock = stockRequest.getStock();
+        Map<TicketType, Integer> newStock = stockRequest.getStock();
         newStock.forEach((type, quantity) -> shop.updateStock(type, quantity));
         shopService.update(shop);
 
