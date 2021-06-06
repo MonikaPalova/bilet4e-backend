@@ -23,6 +23,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String AUTHENTICATE_PATH = "/authenticate";
     private static final String REGISTER_PATH = "/register";
 
+    private static final String GET_ALL_SHOPS = "/api/v1/shops";
+
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
 
@@ -54,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable() //
 
                 .authorizeRequests() //
-                .antMatchers(AUTHENTICATE_PATH, REGISTER_PATH).permitAll() //
+                .antMatchers(AUTHENTICATE_PATH, REGISTER_PATH, GET_ALL_SHOPS).permitAll() //
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() //
 
                 .anyRequest().authenticated() //
