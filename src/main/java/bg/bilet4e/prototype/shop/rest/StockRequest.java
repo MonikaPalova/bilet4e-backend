@@ -1,26 +1,26 @@
 package bg.bilet4e.prototype.shop.rest;
 
-import java.util.EnumMap;
+import java.util.Map;
 
 import bg.bilet4e.prototype.ticket.TicketType;
 
 public class StockRequest {
 
-    private EnumMap<TicketType, Integer> stock;
+    private Map<TicketType, Integer> stock;
 
     public StockRequest() {
         
     }
     
-    public StockRequest(EnumMap<TicketType, Integer> stock) {
+    public StockRequest(Map<TicketType, Integer> stock) {
         this.stock = stock;
     }
 
-    public EnumMap<TicketType, Integer> getStock() {
+    public Map<TicketType, Integer> getStock() {
         return stock;
     }
 
-    public void setStock(EnumMap<TicketType, Integer> stock) {
+    public void setStock(Map<TicketType, Integer> stock) {
         this.stock = stock;
     }
 }
