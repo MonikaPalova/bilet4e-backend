@@ -29,7 +29,7 @@ import bg.bilet4e.prototype.ticket.TicketType;
 
 @RestController
 @RequestMapping(value = ShopController.API_BASE_PATH)
-@CrossOrigin(origins = { "http://localhost:4200", "https://bilet4e.herokuapp.com" })
+@CrossOrigin(origins = { "http://localhost:4200", "https://bilet4e.herokuapp.com" }, allowedHeaders="*")
 class ShopController {
 
     static final String API_BASE_PATH = "api/v1/shops";
