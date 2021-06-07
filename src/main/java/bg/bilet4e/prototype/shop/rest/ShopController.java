@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,6 +29,7 @@ import bg.bilet4e.prototype.ticket.TicketType;
 
 @RestController
 @RequestMapping(value = ShopController.API_BASE_PATH)
+@CrossOrigin(origins = { "http://localhost:4200", "https://bilet4e.herokuapp.com" })
 class ShopController {
 
     static final String API_BASE_PATH = "api/v1/shops";
@@ -56,8 +58,9 @@ class ShopController {
     @GetMapping(path = "/{shopId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getShop(@PathVariable final int shopId) {
         LOGGER.info("performing GET request /api/v1/shops/{}", shopId);
-        Shop shop = shopService.fetchById(shopId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format(SHOP_NOT_EXIST_ERR_MSG, shopId)));
+        Shop shop = shopService.fetchById(shopId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format(SHOP_NOT_EXIST_ERR_MSG, shopId)));
 
         return ResponseEntity.ok(converter.toDTO(shop));
     }
@@ -80,7 +83,8 @@ class ShopController {
         try {
             return Integer.parseInt(ownerId);
         } catch (NumberFormatException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ownerId [" + ownerId + "]", ex);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Invalid ownerId [" + ownerId + "]", ex);
         }
     }
 
@@ -96,17 +100,20 @@ class ShopController {
     @GetMapping(path = "/{shopId}/stock", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getStock(@PathVariable final int shopId) {
         LOGGER.info("performing GET request /api/v1/shops/{}/stock", shopId);
-        Shop shop = shopService.fetchById(shopId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format(SHOP_NOT_EXIST_ERR_MSG, shopId)));
+        Shop shop = shopService.fetchById(shopId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format(SHOP_NOT_EXIST_ERR_MSG, shopId)));
 
         return ResponseEntity.ok(shop.getStock());
     }
 
     @PatchMapping(path = "/{shopId}/stock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateStock(@PathVariable final int shopId, @RequestBody StockRequest stockRequest) {
+    public ResponseEntity<?> updateStock(@PathVariable final int shopId,
+            @RequestBody StockRequest stockRequest) {
         LOGGER.info("performing UPDATE request /api/v1/shops/{}/stock", shopId);
-        Shop shop = shopService.fetchById(shopId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format(SHOP_NOT_EXIST_ERR_MSG, shopId)));
+        Shop shop = shopService.fetchById(shopId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format(SHOP_NOT_EXIST_ERR_MSG, shopId)));
 
         Map<TicketType, Integer> newStock = stockRequest.getStock();
         newStock.forEach((type, quantity) -> shop.updateStock(type, quantity));
