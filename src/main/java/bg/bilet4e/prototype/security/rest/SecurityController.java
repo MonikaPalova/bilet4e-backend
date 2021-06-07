@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,6 +21,7 @@ import bg.bilet4e.prototype.security.user.UserService;
 import bg.bilet4e.prototype.security.user.UserType;
 
 @Controller
+@CrossOrigin(origins = { "http://localhost:4200", "https://bilet4e.herokuapp.com" }, allowedHeaders="*")
 public class SecurityController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityController.class);
