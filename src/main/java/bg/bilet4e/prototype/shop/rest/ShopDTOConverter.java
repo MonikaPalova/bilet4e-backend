@@ -25,7 +25,7 @@ public class ShopDTOConverter {
         Owner owner = shop.getOwner();
         Map<TicketType, Integer> stock = shop.getStock();
 
-        return new ShopDTO(id, name, owner.getId(), shop.getCoordinates(), stock);
+        return new ShopDTO(id, name, owner.getId(),owner.getUsername(), shop.getCoordinates(), stock);
     }
 
     public List<ShopDTO> toDTOs(Collection<Shop> shops) {

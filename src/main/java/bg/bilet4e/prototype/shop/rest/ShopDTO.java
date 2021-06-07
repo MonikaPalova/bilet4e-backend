@@ -18,15 +18,18 @@ public class ShopDTO {
 //    private WeeklyWorkingTime workTime;
 
     private int ownerId;
+    
+    private String ownerName;
 
 //    private List<Image> images;
 
     private Map<TicketType, Integer> stock;
     
-    public ShopDTO(int id, String name, int ownerId, Coordinates coordinates,Map<TicketType, Integer> stock) {
+    public ShopDTO(int id, String name, int ownerId, String ownerName,Coordinates coordinates,Map<TicketType, Integer> stock) {
         this.id = id;
         this.name = name;
         this.ownerId = ownerId;
+        this.ownerName=ownerName;
         this.coordinates = coordinates;
         this.stock=stock;
     }
@@ -70,4 +73,12 @@ public class ShopDTO {
     public void setStock(Map<TicketType, Integer> stock) {
         this.stock = stock;
     }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    } 
 }
