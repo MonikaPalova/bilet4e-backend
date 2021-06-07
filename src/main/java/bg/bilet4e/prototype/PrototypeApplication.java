@@ -1,6 +1,7 @@
 package bg.bilet4e.prototype;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.boot.SpringApplication;
@@ -23,7 +24,7 @@ public class PrototypeApplication {
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         // Don't do this in production, use a proper list of allowed origins
-        config.setAllowedOrigins(List.of("http://localhost:4200", "https://bilet4e.herokuapp.com"));
+        config.setAllowedOrigins(Collections.singletonList("*"));
         config.setAllowedHeaders(
                 Arrays.asList("Origin", "Content-Type", "Accept", "Authorization", "xsrf-token"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
